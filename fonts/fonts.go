@@ -13,7 +13,7 @@ import (
 	"github.com/golang/freetype/truetype"
 )
 
-//go:embed *.ttf */*.ttf
+//go:embed *.ttf
 var embedded embed.FS
 
 func init() {
@@ -104,7 +104,7 @@ func LoadFrom(fsys fs.FS) (int, error) {
 				return fmt.Errorf("process %q: already have font face %q %s", path, fsf, ff)
 			}
 			f.Italic = buf
-		case "Bold Italic":
+		case "Bold Italic", "BoldItalic":
 			if f.BoldItalic != nil {
 				return fmt.Errorf("process %q: already have font face %q %s", path, fsf, ff)
 			}
@@ -112,7 +112,8 @@ func LoadFrom(fsys fs.FS) (int, error) {
 		case "":
 			return fmt.Errorf("process %q: parse ttf: no subfamily name", path)
 		default:
-			return fmt.Errorf("process %q: unsupported subfamily %q", path, fsf)
+			fmt.Printf("warn: process %q: unsupported subfamily %q\n", path, fsf)
+			return nil
 		}
 		xm[ff] = f
 		return nil
