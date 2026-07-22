@@ -13,7 +13,7 @@ import (
 	"github.com/golang/freetype/truetype"
 )
 
-//go:embed *.ttf
+//go:embed *.ttf *.TTF *.otf
 var embedded embed.FS
 
 func init() {
@@ -65,7 +65,9 @@ func LoadFrom(fsys fs.FS) (int, error) {
 		}
 		ttf, err := truetype.Parse(buf)
 		if err != nil {
-			return fmt.Errorf("process %q: parse ttf: %w", path, err)
+			// Skip fonts that can't be parsed (e.g., CFF-based OTF files)
+			// These will be silently ignored
+			return nil
 		}
 		ff := ttf.Name(truetype.NameIDFontFamily)
 		if ff == "" {
