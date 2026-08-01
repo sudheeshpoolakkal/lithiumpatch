@@ -24,6 +24,7 @@ The following files cannot be used and are ignored during build:
 - `Bastarda.otf`
 - `GreatVictorian-Standard.otf`
 - `RusticRoadway.otf`
+- `qt-bookmann/*.otf` (QTBookmann)
 
 ### WOFF2 files (not supported):
 - `Anthropic-serif.woff2` (TTF version available: `Anthropic-serif.ttf`)
@@ -34,4 +35,4 @@ The following files cannot be used and are ignored during build:
 
 ## Current Status
 
-**22 complete font families** are available and will be embedded in the APK.
+**23 complete font families** are available and will be embedded in the APK (including EB Garamond).
