@@ -10,7 +10,7 @@ func init() {
 		PatchFile("res/layout/fragment_display_settings.xml",
 			ReplaceString(
 				`<com.faultexception.reader.widget.ExpansionScrollView`,
-				`<ScrollView android:background="#ff121212"`,
+				`<ScrollView android:background="@drawable/bg_premium_popup"`,
 			),
 			ReplaceString(
 				`<Space android:id="@id/end_padding" android:visibility="gone"`,
@@ -32,7 +32,7 @@ func init() {
 		PatchFile("res/layout-v17/fragment_display_settings.xml",
 			ReplaceString(
 				`<com.faultexception.reader.widget.ExpansionScrollView`,
-				`<ScrollView android:background="#ff121212"`,
+				`<ScrollView android:background="@drawable/bg_premium_popup"`,
 			),
 			ReplaceString(
 				`<Space android:id="@id/end_padding" android:visibility="gone"`,
