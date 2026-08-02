@@ -13,7 +13,7 @@ import (
 	"github.com/golang/freetype/truetype"
 )
 
-//go:embed *.ttf *.TTF *.otf Bitter Bitter/static bookerly-cufonfonts EB_Garamond/static qt-bookmann
+//go:embed *.ttf *.TTF *.otf Bitter Bitter/static bookerly-cufonfonts EB_Garamond/static qt-bookmann RakutenSerifApp
 var embedded embed.FS
 
 func init() {
