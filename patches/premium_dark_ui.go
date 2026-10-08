@@ -61,15 +61,15 @@ func init() {
 		// or just forces the brand color.
 		PatchFile("res/values/colors.xml",
 			ReplaceString(
-				`<color name="app_primary">#ff5f2deb</color>`,
+				`<color name="app_primary">#5f2deb</color>`,
 				`<color name="app_primary">#ff5c6bc0</color>`, // Indigo 400
 			),
 			ReplaceString(
-				`<color name="app_primary_dark">#ff4a1cc9</color>`,
+				`<color name="app_primary_dark">#4a1cc9</color>`,
 				`<color name="app_primary_dark">#ff3949ab</color>`, // Indigo 600
 			),
 			ReplaceString(
-				`<color name="ic_launcher_background">#ff784ef1</color>`,
+				`<color name="ic_launcher_background">#784ef1</color>`,
 				`<color name="ic_launcher_background">#ff121212</color>`, // Keep icon background dark/neutral
 			),
 		),

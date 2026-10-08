@@ -1,5 +1,7 @@
 #!/bin/bash
-set -e
+set -euo pipefail
+
+cd "$(dirname "$0")"
 
 # Add common Go paths to PATH just in case
 export PATH=$HOME/Android/Sdk/build-tools/36.1.0:$HOME/sdk/go/bin:$PATH:/usr/local/go/bin:$HOME/go/bin
@@ -14,16 +16,13 @@ echo "Generating assets..."
 go generate ./app
 
 echo "Building patched APK..."
-# Assuming the input APK is downloaded by go generate to app/Lithium_0.24.5.apk
-if [ ! -f "app/Lithium_0.24.5.apk" ]; then
-    echo "Input APK not found. Trying to download manually via go generate..."
-    # go generate should have done it.
-fi
+INPUT_APK="app/$(sed -n 's/.*LithiumAPK[[:space:]]*=[[:space:]]*"\([^"]*\)".*/\1/p' app/app.go)"
+OUTPUT_APK="${INPUT_APK%.apk}.patched.resigned.apk"
 
-go run . app/Lithium_0.24.5.apk
+go build -o lithiumpatch .
+./lithiumpatch "$INPUT_APK"
 
 echo "Installing to device..."
-OUTPUT_APK="app/Lithium_0.24.5.patched.resigned.apk"
 
 if [ ! -f "$OUTPUT_APK" ]; then
     echo "Error: Output APK $OUTPUT_APK not found."
@@ -31,4 +30,6 @@ if [ ! -f "$OUTPUT_APK" ]; then
 fi
 
 adb install -r "$OUTPUT_APK"
-echo "Success! App installed."
+echo "Launching app..."
+adb shell am start -W -n com.faultexception.reader/com.faultexception.reader.MainActivity
+echo "Success! App installed and launched."

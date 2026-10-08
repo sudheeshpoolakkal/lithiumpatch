@@ -9,7 +9,6 @@ import (
 	"os"
 	"path/filepath"
 	"slices"
-	"sort"
 	"strings"
 	"unicode"
 
@@ -32,6 +31,7 @@ type Entry struct {
 	MeaningGroups []EntryMeaning //
 	Info          string         // optional; e.g., etymology
 	Source        string         // optional
+	HTML          string         // optional; replaces MeaningGroups (THIS MUST BE PRE-SANITIZED)
 }
 
 // EntryMeaning contains the definitions for one sub-form of a word.
@@ -186,8 +186,11 @@ func (b *builder) run() error {
 	// sort the term index buckets (for binary searches)
 	// note: there may be multiple entries for a term, so we don't dedupe
 	for _, x := range b.indexBuckets {
-		sort.Slice(x, func(i, j int) bool {
-			return bytes.Compare([]byte(x[i].Term), []byte(x[j].Term)) < 0
+		slices.SortFunc(x, func(a, b builderIndexEntry) int {
+			if c := strings.Compare(a.Term, b.Term); c != 0 {
+				return c
+			}
+			return cmp.Compare(a.Entry, b.Entry) // for reproducibility
 		})
 	}
 
@@ -301,6 +304,10 @@ func (b *builder) run() error {
 				// Source
 				buf = binary.BigEndian.AppendUint32(buf, uint32(len(e.Source)))
 				buf = append(buf, e.Source...)
+
+				// HTML
+				buf = binary.BigEndian.AppendUint32(buf, uint32(len(e.HTML)))
+				buf = append(buf, e.HTML...)
 			}
 
 			w.Write(buf)
